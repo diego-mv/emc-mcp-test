@@ -159,7 +159,7 @@ const getServer = () => {
         return {
           content: [
             {
-              text: "PEP not found, check if the code is correct (XX-XX-XXXX-XX)",
+              text: "PEP not exist, check if the code is correct (XX-XX-XXXX-XX)",
               type: "text",
             },
           ],
