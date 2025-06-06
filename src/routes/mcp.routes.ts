@@ -14,9 +14,10 @@ const getServer = () => {
     version: "1.0.0",
   });
 
-  server.resource(
+  server.tool(
     "sip-info",
     "Information about the SIP platform (platform where this chatbot is running)",
+    {},
     async () => {
       const data = [
         {
@@ -34,11 +35,10 @@ const getServer = () => {
       ];
 
       return {
-        contents: [
+        content: [
           {
-            uri: "sip-info.json",
-            text: JSON.stringify(data, null, 2),
-            mimeType: "application/json",
+            text: JSON.stringify(data),
+            type: "text",
           },
         ],
       };
