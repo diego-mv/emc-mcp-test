@@ -18,12 +18,14 @@ router.post("/", async (req: Request, res: Response) => {
   let transport: StreamableHTTPServerTransport;
 
   if (sessionId && transports[sessionId]) {
+    console.log("→ Using existing session:", sessionId);
     transport = transports[sessionId];
   } else if (!sessionId && isInitializeRequest(req.body)) {
+    console.log("→ Initializing new session");
     transport = new StreamableHTTPServerTransport({
       sessionIdGenerator: () => randomUUID(),
       onsessioninitialized: (newSessionId) => {
-        transports[newSessionId] = transport;
+        if (transport) transports[newSessionId] = transport;
       },
     });
 
@@ -65,6 +67,11 @@ router.post("/", async (req: Request, res: Response) => {
 
     await server.connect(transport);
   } else {
+    console.error(
+      "→ Invalid session ID or invalid request",
+      sessionId,
+      req.body
+    );
     res.status(400).json({
       jsonrpc: "2.0",
       error: {
