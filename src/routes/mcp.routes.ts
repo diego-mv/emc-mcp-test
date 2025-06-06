@@ -93,5 +93,8 @@ const handleSessionRequest = async (req: Request, res: Response) => {
 
 router.get("/", handleSessionRequest);
 router.delete("/", handleSessionRequest);
+router.get("/status", (req: Request, res: Response) => {
+  res.status(200).send("OK");
+});
 
 export default router;
