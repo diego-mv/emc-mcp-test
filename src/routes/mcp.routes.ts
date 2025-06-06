@@ -14,6 +14,37 @@ const getServer = () => {
     version: "1.0.0",
   });
 
+  server.resource(
+    "sip-info",
+    "Information about the SIP platform (platform where this chatbot is running)",
+    async () => {
+      const data = [
+        {
+          q: "¿Qué es SIP?",
+          a: "SIP es una plataforma web que permite manejar el presupuesto OPEX de Cencosud.",
+        },
+        {
+          q: "¿Quién desarrolla/mantiene/maneja esta plataforma?",
+          a: "EMC es el equipo de Cencosud que desarrolla, mantiene y maneja esta plataforma.",
+        },
+        {
+          q: "¿Qué es un PEP?",
+          a: "Un PEP es una línea de gasto, es decir, una línea de presupuesto que se puede asignar a un proyecto.",
+        },
+      ];
+
+      return {
+        contents: [
+          {
+            uri: "sip-info.json",
+            text: JSON.stringify(data, null, 2),
+            mimeType: "application/json",
+          },
+        ],
+      };
+    }
+  );
+
   server.tool(
     "emc-members",
     "get a list of members of 'EMC' team",
