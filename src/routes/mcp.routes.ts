@@ -68,10 +68,11 @@ router.post("/", async (req: Request, res: Response) => {
     await server.connect(transport);
   } else {
     console.error(
-      "→ Invalid session ID or invalid request",
-      sessionId,
-      req.body
+      "→ Invalid session ID or invalid request. sessionId: ",
+      sessionId
     );
+    console.error("→ Request headers: ", req.headers);
+    console.error("→ Request body: ", req.body);
     res.status(400).json({
       jsonrpc: "2.0",
       error: {
