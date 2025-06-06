@@ -15,24 +15,156 @@ const getServer = () => {
   });
 
   server.tool(
-    "sip-info",
-    "Information about the SIP platform (platform where this chatbot is running)",
-    {},
-    async () => {
-      const data = [
+    "get-pep-by-code",
+    "Get info about a PEP level 4 (N4), with data of cost center, country, area, ledger account, business flag, division, management, etc.",
+    {
+      pepCode: z
+        .string()
+        .describe(
+          "PEP code with format 'XX-XX-XXXX-XX', otherwise 'null' not allowed"
+        ),
+    },
+    async ({ pepCode }: { pepCode: string }) => {
+      const allPeps = [
         {
-          q: "¿Qué es SIP?",
-          a: "SIP es una plataforma web que permite manejar el presupuesto OPEX de Cencosud.",
+          code: "AG-AT-1193-HP",
+          country: "Chile",
+          currency: "CLP",
+          serviceCode: "2048",
+          service: "Automatización de procesos internos",
+          area: "Innovación",
+          ledgerAccount: "Consultoría",
         },
         {
-          q: "¿Quién desarrolla/mantiene/maneja esta plataforma?",
-          a: "EMC es el equipo de Cencosud que desarrolla, mantiene y maneja esta plataforma.",
+          code: "AG-BR-1213-SW",
+          country: "Brasil",
+          currency: "BRL",
+          serviceCode: "3127",
+          service: "Desarrollo de plataforma móvil",
+          area: "Tecnología",
+          ledgerAccount: "Licencias de software",
         },
         {
-          q: "¿Qué es un PEP?",
-          a: "Un PEP es una línea de gasto, es decir, una línea de presupuesto que se puede asignar a un proyecto.",
+          code: "AG-BR-1298-HP",
+          country: "Argentina",
+          currency: "ARS",
+          serviceCode: "4501",
+          service: "Capacitación de equipos",
+          area: "Recursos Humanos",
+          ledgerAccount: "Honorarios externos",
+        },
+        {
+          code: "AG-BR-1336-HP",
+          country: "Uruguay",
+          currency: "UYU",
+          serviceCode: "5823",
+          service: "Soporte técnico regional",
+          area: "Back Office",
+          ledgerAccount: "Gastos operativos",
+        },
+        {
+          code: "AG-BR-1361-HP",
+          country: "Chile",
+          currency: "CLP",
+          serviceCode: "6274",
+          service: "Integración con sistemas externos",
+          area: "Integraciones",
+          ledgerAccount: "Servicios profesionales",
+        },
+        {
+          code: "AG-BR-1377-HP",
+          country: "Argentina",
+          currency: "ARS",
+          serviceCode: "7150",
+          service: "Mejoras en infraestructura IT",
+          area: "Infraestructura",
+          ledgerAccount: "Mantenimiento",
+        },
+        {
+          code: "UG-VO-1310-GG",
+          country: "Brasil",
+          currency: "BRL",
+          serviceCode: "8392",
+          service: "Gestión de proyectos",
+          area: "PMO",
+          ledgerAccount: "Honorarios consultores",
+        },
+        {
+          code: "UG-VO-1310-RH",
+          country: "Uruguay",
+          currency: "UYU",
+          serviceCode: "9135",
+          service: "Administración de nómina",
+          area: "Recursos Humanos",
+          ledgerAccount: "Salarios",
+        },
+        {
+          code: "UG-VO-1311-GG",
+          country: "Chile",
+          currency: "CLP",
+          serviceCode: "1047",
+          service: "Análisis financiero",
+          area: "Finanzas",
+          ledgerAccount: "Gastos generales",
+        },
+        {
+          code: "UG-VO-1311-RH",
+          country: "Argentina",
+          currency: "ARS",
+          serviceCode: "1189",
+          service: "Reclutamiento y selección",
+          area: "Recursos Humanos",
+          ledgerAccount: "Honorarios RRHH",
+        },
+        {
+          code: "UG-VO-1312-GG",
+          country: "Uruguay",
+          currency: "UYU",
+          serviceCode: "1256",
+          service: "Optimización logística",
+          area: "Logística",
+          ledgerAccount: "Gastos operativos",
+        },
+        {
+          code: "UG-VO-1312-RH",
+          country: "Brasil",
+          currency: "BRL",
+          serviceCode: "1384",
+          service: "Capacitación interna",
+          area: "Capacitación",
+          ledgerAccount: "Gastos RRHH",
+        },
+        {
+          code: "UG-VO-1501-GG",
+          country: "Chile",
+          currency: "CLP",
+          serviceCode: "1523",
+          service: "Representación corporativa",
+          area: "Relaciones Públicas",
+          ledgerAccount: "Gastos generales",
+        },
+        {
+          code: "UG-VO-2351-AL",
+          country: "Argentina",
+          currency: "ARS",
+          serviceCode: "2387",
+          service: "Servicios de catalogación",
+          area: "Archivo",
+          ledgerAccount: "Alquileres y servicios",
         },
       ];
+
+      const data = allPeps.filter((pep) => pep.code.includes(pepCode));
+      if (!data) {
+        return {
+          content: [
+            {
+              text: "PEP not found",
+              type: "text",
+            },
+          ],
+        };
+      }
 
       return {
         content: [
