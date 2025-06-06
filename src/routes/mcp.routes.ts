@@ -44,6 +44,7 @@ const getServer = () => {
 
 router.post("/", async (req: Request, res: Response) => {
   try {
+    console.log("Received POST MCP request - ", new Date().toISOString());
     const server = getServer();
     const transport: StreamableHTTPServerTransport =
       new StreamableHTTPServerTransport({
